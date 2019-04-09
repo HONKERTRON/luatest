@@ -36,6 +36,10 @@ while running do
 	if cmd == "q"
 	then 
 		running = false
+	else
+		for x, y, dir in cmd:gmatch("[m]%s+(%d+)%s+(%d+)%s+([lrud])") do
+			move(tonumber(x), tonumber(y), dir)
+		end
 	end
 	
 	clearScreen()

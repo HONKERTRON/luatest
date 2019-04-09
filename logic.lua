@@ -90,7 +90,17 @@ function mix()
 end
 
 function move(x, y, dir)
-
+	if x >= 0 and y >= 0 and x <= map.m and y <= map.n then
+		if dir == "u" and y > 0 then
+			map[y][x], map[y-1][x] = map[y-1][x], map[y][x] 
+		elseif dir == "d" and y < map.n then
+			map[y][x], map[y+1][x] = map[y+1][x], map[y][x] 
+		elseif dir == "r" and x < map.m then
+			map[y][x], map[y][x+1] = map[y][x+1], map[y][x] 
+		elseif dir == "l" and x > 0 then
+			map[y][x], map[y][x-1] = map[y][x-1], map[y][x] 
+		end
+	end
 end
 
 function dump()
