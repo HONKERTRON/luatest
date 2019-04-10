@@ -65,6 +65,12 @@ function logic.tick()
 		return changes
 	end
 	
+	if combinations.scan(map) == false
+	then
+		logic.mix()
+		return true
+	end
+	
 	return changes
 
 end
