@@ -27,10 +27,9 @@ while running do
 
 	logic.dump()
 	while logic.tick() == true do
-		--logic.tick()
 		clearScreen()
 		logic.dump()
-		sleep(160)
+		sleep(240)
 	end
 	
 	local cmd = io.read()

@@ -31,7 +31,7 @@ function logic.init()
 					map[i][j] = 0
 				end
 			end
-			generateLine()
+			logic.mix()
 		else
 			map.n = 0
 			map.m = 0
@@ -47,11 +47,15 @@ end
 function logic.tick()
 
 	local changes = false
+	changes = generateLine()
+	if changes == true
+	then
+		return changes
+	end
 	
 	changes = gravity()
 	if changes == true 
 	then
-		generateLine()
 		return changes
 	end
 	
@@ -66,6 +70,12 @@ function logic.tick()
 end
 
 function logic.mix()
+	
+	for i = 0, map.n do
+		for j = 0, map.m do
+			map[i][j] = math.random(SYMBOLS)
+		end
+	end
 	
 	while logic.tick() == true do end
 
@@ -116,11 +126,16 @@ end
 
 function generateLine()
 
+	local res = false
+
 	for i = 0, map.m do
 		if map[0][i] == 0
 		then
 			map[0][i] = math.random(SYMBOLS)
+			res = true
 		end
 	end
+	
+	return res
 
 end
