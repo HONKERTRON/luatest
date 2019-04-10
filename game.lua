@@ -2,8 +2,7 @@
 
 require "logic"
 
-local running = true;
-
+--_HELPERS
 
 function clearScreen()
 
@@ -18,17 +17,20 @@ function sleep(ms)
 end
 
 
-init()
+local running = true
+local score = 0
+
+logic.init()
 clearScreen()
 
 while running do
 
-	dump()
-	while tick() == true do
-		tick()
+	logic.dump()
+	while logic.tick() == true do
+		--logic.tick()
 		clearScreen()
-		dump()
-		sleep(80)
+		logic.dump()
+		sleep(160)
 	end
 	
 	local cmd = io.read()
@@ -38,7 +40,7 @@ while running do
 		running = false
 	else
 		for x, y, dir in cmd:gmatch("[m]%s+(%d+)%s+(%d+)%s+([lrud])") do
-			move(tonumber(x), tonumber(y), dir)
+			logic.move(tonumber(x), tonumber(y), dir)
 		end
 	end
 	

@@ -1,6 +1,11 @@
 --Main game ticker
 
 require "graphics"
+require "combinations"
+
+logic = {}
+
+local SYMBOLS = 6
 
 local map = {}
 --height
@@ -8,7 +13,7 @@ map.n = 0
 --width
 map.m = 0
 
-function init()
+function logic.init()
 	
 	local file = io.open("config.ini", "r")
 	if file
@@ -26,9 +31,7 @@ function init()
 					map[i][j] = 0
 				end
 			end
-			for i = 0, 1 do
-				generateLine()
-			end
+			generateLine()
 		else
 			map.n = 0
 			map.m = 0
@@ -40,6 +43,57 @@ function init()
 	end
 	
 end
+
+function logic.tick()
+
+	local changes = false
+	
+	changes = gravity()
+	if changes == true 
+	then
+		generateLine()
+		return changes
+	end
+	
+	changes = combinations.check(map)
+	if changes == true 
+	then
+		return changes
+	end
+	
+	return changes
+
+end
+
+function logic.mix()
+	
+	while logic.tick() == true do end
+
+end
+
+function logic.move(x, y, dir)
+	if x >= 0 and y >= 0 and x <= map.m and y <= map.n then
+		if dir == "u" and y > 0 then
+			map[y][x], map[y-1][x] = map[y-1][x], map[y][x] 
+		elseif dir == "d" and y < map.n then
+			map[y][x], map[y+1][x] = map[y+1][x], map[y][x] 
+		elseif dir == "r" and x < map.m then
+			map[y][x], map[y][x+1] = map[y][x+1], map[y][x] 
+		elseif dir == "l" and x > 0 then
+			map[y][x], map[y][x-1] = map[y][x-1], map[y][x] 
+		end
+	end
+end
+
+function logic.dump()
+	
+	graphics.drawField(map)
+	
+end
+
+
+
+-- _HELPERS
 
 function gravity()
 
@@ -65,46 +119,8 @@ function generateLine()
 	for i = 0, map.m do
 		if map[0][i] == 0
 		then
-			map[0][i] = math.random(6)
+			map[0][i] = math.random(SYMBOLS)
 		end
 	end
 
-end
-
-function tick()
-
-	local changes = false
-	
-	changes = gravity()
-	if changes
-	then
-		generateLine()
-	end
-	
-	return changes
-
-end
-
-function mix()
-
-end
-
-function move(x, y, dir)
-	if x >= 0 and y >= 0 and x <= map.m and y <= map.n then
-		if dir == "u" and y > 0 then
-			map[y][x], map[y-1][x] = map[y-1][x], map[y][x] 
-		elseif dir == "d" and y < map.n then
-			map[y][x], map[y+1][x] = map[y+1][x], map[y][x] 
-		elseif dir == "r" and x < map.m then
-			map[y][x], map[y][x+1] = map[y][x+1], map[y][x] 
-		elseif dir == "l" and x > 0 then
-			map[y][x], map[y][x-1] = map[y][x-1], map[y][x] 
-		end
-	end
-end
-
-function dump()
-	
-	drawField(map)
-	
 end

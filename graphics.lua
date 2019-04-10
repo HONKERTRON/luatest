@@ -1,18 +1,21 @@
 --Field visualisation
 
+graphics = {}
+
 local symbols = {}
 
+local SYMBOLS = 6
 symbols[0] = "*"
-for i = 1, 6 do
+for i = 1, SYMBOLS do
 	symbols[i] = string.char(string.byte("A") + i - 1)
 end
 
-function drawField(map)
+function graphics.drawField(map)
 
 	local str = ""
 	
 	io.write(" ")
-	for i = 0, 2*map.n+1 do
+	for i = 0, 2*map.m+1 do
 		if i % 2 == 1
 		then
 			io.write((i-1) / 2)
@@ -22,7 +25,7 @@ function drawField(map)
 	end
 	io.write("\n")
 	
-	for i = 0, 2*map.n do
+	for i = 0, 2*map.m do
 		str = str.."-"
 	end
 	io.write(" +"..str.."\n")
